@@ -288,7 +288,7 @@ $(function () {
 
 	}
 	
-	// ADD COMMENT START
+	// ADD COMMENT START MODIF GIT
 	function renderAddComment(index, data) {
 		var page = $('.add-comment');
 		page.addClass('visible');
