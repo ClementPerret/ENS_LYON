@@ -288,24 +288,29 @@ $(function () {
 
 	}
 	
-	// ADD COMMENT START MODIF GIT
+	// COMMENT VIEW VISBLE START
 	function renderAddComment(index, data) {
 		var page = $('.add-comment');
 		page.addClass('visible');
-		$("#comment-input").val('')
-		if(data.length){
-			data.forEach(function (item) {
-				if(item.id == index){
-					$( "#comment-button" ).click(function() {
-						item.reviews.push($("#comment-input").val());
-						window.location = "#product/"+index;
-					});
+		$("#comment-input").val('');
+		itemIndex = index;
+		TabProduct = data;
+
+	}
+	// COMMENT VIEW VISBLE END
+
+	// ADD COMMENT TO OBJ START
+	$( "#comment-button" ).click(function() {
+		if(TabProduct.length){
+			TabProduct.forEach(function (item) {
+				if(item.id == itemIndex){
+					item.reviews.push($("#comment-input").val());
+					window.location = "#product/"+itemIndex;
 				}
 			});
 		}
-	}
-	// ADD COMMENT END
-
+	});
+	// ADD COMMENT TO OBJ END
 
 	// Find and render the filtered data results. Arguments are:
 	// filters - our global variable - the object with arrays about what we are searching for.
