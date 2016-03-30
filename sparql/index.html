@@ -1,0 +1,66 @@
+
+<meta http-equiv="Context-Type" content="text/html; charset=UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Explorateur LinkedMDb</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="scripts.js"></script>
+    <style type="text/css">
+    #filmImg {
+        width: 200px;
+    }
+    </style>
+</head>
+<body>
+
+    <div id="film-pane" class="pane">
+        <header><input id="film-uri" placeholder="film URI"><button onClick='film()'>Go</button></header>
+        <h1 id="filmTitle">XXX-Title</h1>
+        <h2 id="filmDate">XXX-Date</h2>
+        <img id="filmImg"src="YYY">
+        <p id="abstract">YYY Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat vitae erat eget lobortis. Duis rutrum pulvinar tortor et sollicitudin. Suspendisse quis commodo massa. Mauris tincidunt cursus odio, id lobortis lorem vulputate ac. Vestibulum molestie nunc magna, a vestibulum dolor commodo non.</p>
+
+        <p>Director(s)</p>
+        <ul id="DirectorNames">
+        </ul>
+        <p>Actors</p>
+        <ul id="ActorNames">
+        </ul>
+        <p><a id="FreeBase" href="XXX">on Freebase</a></p>
+    </div>
+
+    <div id="actor-pane" class="pane">
+        <header><input id="film-uri" placeholder="actor URI"><button>Go</button></header>
+        <h1>XXX-Name</h1>
+        <img src="YYY">
+        <p>YYY Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat vitae erat eget lobortis. Duis rutrum pulvinar tortor et sollicitudin. Suspendisse quis commodo massa. Mauris tincidunt cursus odio, id lobortis lorem vulputate ac. Vestibulum molestie nunc magna, a vestibulum dolor commodo non.</p>
+
+        <p>Films</p>
+        <ul>
+            <li><a href="XXX">XXX Movie title</a></li>
+            <li><a href="XXX">XXX Movie title</a></li>
+            <li>...</li>
+        </ul>
+        <p><a href="XXX">as director?</a></p> <!-- se baser sur le nom -->
+        <p><a href="XXX">on Freebase</a></p>
+    </div>
+    <div id="director-pane" class="pane">
+        <header><input id="film-uri" placeholder="director URI"><button>Go</button></header>
+        <h1>XXX-Name</h1>
+        <!-- pas de owl:sameAs pour les réalisateurs : utiliser celui d'un acteur homonyme -->
+        <img src="YYY">
+        <p>YYY Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat vitae erat eget lobortis. Duis rutrum pulvinar tortor et sollicitudin. Suspendisse quis commodo massa. Mauris tincidunt cursus odio, id lobortis lorem vulputate ac. Vestibulum molestie nunc magna, a vestibulum dolor commodo non.</p>
+
+        <p>Films</p>
+        <ul>
+            <li><a href="XXX">XXX Movie title</a></li>
+            <li><a href="XXX">XXX Movie title</a></li>
+            <li>...</li>
+        </ul>
+        <p><a href="XXX">as actor?</a></p> <!-- se baser sur le nom -->
+        <p><a href="XXX">on Freebase</a></p>
+    </div>
+</body>
+</html><html><head></head><body></body></html>
