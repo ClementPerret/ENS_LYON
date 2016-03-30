@@ -1,0 +1,8 @@
+    #filmImg {
+        width: 200px;
+    }
+    #film-pane,
+    #actor-pane,
+    #director-pane {
+        display: none;
+    }
