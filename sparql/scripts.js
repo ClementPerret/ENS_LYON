@@ -1,5 +1,8 @@
 
 function film() {
+  document.getElementById("film-pane").style.display = "block";
+  document.getElementById("actor-pane").style.display = "none";
+  document.getElementById("director-pane").style.display = "none";
   // title date sameAs freebase
   urlclient = document.getElementById("film-uri").value;
   var endpoint = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
@@ -29,14 +32,14 @@ function film() {
         document.getElementById("filmDate").innerHTML = bindings[i].date.value;
         var urlDbpedia = bindings[i].sameAs.value;
         dbpedia(urlDbpedia);
-        actorname();
-        directorname();
         console.log(urlDbpedia);
         document.getElementById("FreeBase").href = bindings[i].foaf.value;
       }
     }
   };
   req.send();
+  actorname();
+  directorname();
 }
   
 function dbpedia(urlDbpedia) {
@@ -61,6 +64,7 @@ function dbpedia(urlDbpedia) {
     } else {
       console.log("Données obtenues");
       var bindings = JSON.parse(req2.responseText).results.bindings;
+      console.log(bindings);
       for (var i=0; i<bindings.length; i++) {
         document.getElementById("abstract").innerHTML = bindings[i].abstract.value;
         document.getElementById("filmImg").src = bindings[i].depiction.value;
@@ -93,8 +97,9 @@ function actorname() {
     } else {
       console.log("Données obtenues");
       var bindings = JSON.parse(req3.responseText).results.bindings;
-      for (var i=0; i<bindings.length; i++) {
       var ul = document.getElementById("ActorNames");
+      ul.innerHTML = ""
+      for (var i=0; i<bindings.length; i++) {
       var li = document.createElement('li');
       var a = document.createElement('a');
       a.textContent = bindings[i].actorname.value;
@@ -130,8 +135,9 @@ function directorname() {
     } else {
       console.log("Données obtenues");
       var bindings = JSON.parse(req4.responseText).results.bindings;
-      for (var i=0; i<bindings.length; i++) {
       var ul = document.getElementById("DirectorNames");
+      ul.innerHTML = ""
+      for (var i=0; i<bindings.length; i++) {
       var li = document.createElement('li');
       var a = document.createElement('a');
       a.textContent = bindings[i].directorname.value;
