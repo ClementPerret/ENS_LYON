@@ -11,8 +11,8 @@
 </head>
 <body>
     <input id="film-uri" placeholder="film URI" size="60"><button onClick='film()'>Go</button><br/>
-    <input id="actor-uri" placeholder="actor URI"><button onClick='actor()'>Go</button><br/>
-    <input id="director-uri" placeholder="director URI"><button onClick='director()'>Go</button>
+    <input id="actor-uri" placeholder="actor URI" size="60"><button onClick='actor()'>Go</button><br/>
+    <input id="director-uri" placeholder="director URI" size="60"><button onClick='director()'>Go</button>
     <div id="film-pane" class="pane">
         <header></header>
         <h1 id="filmTitle"></h1>
@@ -31,32 +31,26 @@
 
     <div id="actor-pane" class="pane">
         <header></header>
-        <h1>XXX-Name</h1>
-        <img src="YYY">
-        <p></p>
+        <h1 id="actorName"></h1>
+        <img src="YYY" id="actorImg">
+        <p id="actorAbstract"></p>
 
         <p>Films</p>
-        <ul>
-            <li><a href="XXX">XXX Movie title</a></li>
-            <li><a href="XXX">XXX Movie title</a></li>
-            <li>...</li>
-        </ul>
-        <p><a href="XXX">as director?</a></p> <!-- se baser sur le nom -->
-        <p><a href="XXX">on Freebase</a></p>
+        <ul id="filmsList"></ul>
+        <br/>
+        <p>As Director</p>
+        <ul id="asDirector"></ul>
+        <p><a id="actorFreebase" href="XXX">on Freebase</a></p>
     </div>
     <div id="director-pane" class="pane">
         <header></header>
         <h1>XXX-Name</h1>
         <!-- pas de owl:sameAs pour les réalisateurs : utiliser celui d'un acteur homonyme -->
         <img src="YYY">
-        <p>YYY Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat vitae erat eget lobortis. Duis rutrum pulvinar tortor et sollicitudin. Suspendisse quis commodo massa. Mauris tincidunt cursus odio, id lobortis lorem vulputate ac. Vestibulum molestie nunc magna, a vestibulum dolor commodo non.</p>
+        <p id="directorAbstract">YYY Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat vitae erat eget lobortis. Duis rutrum pulvinar tortor et sollicitudin. Suspendisse quis commodo massa. Mauris tincidunt cursus odio, id lobortis lorem vulputate ac. Vestibulum molestie nunc magna, a vestibulum dolor commodo non.</p>
 
         <p>Films</p>
-        <ul>
-            <li><a href="XXX">XXX Movie title</a></li>
-            <li><a href="XXX">XXX Movie title</a></li>
-            <li>...</li>
-        </ul>
+        <ul id="directorMovies"></ul>
         <p><a href="XXX">as actor?</a></p> <!-- se baser sur le nom -->
         <p><a href="XXX">on Freebase</a></p>
     </div>
