@@ -1,8 +1,22 @@
 
 function film() {
+
+  //display panes
   document.getElementById("film-pane").style.display = "block";
   document.getElementById("actor-pane").style.display = "none";
   document.getElementById("director-pane").style.display = "none";
+
+  //reinit divs
+  document.getElementById("filmTitle").innerHTML = "";
+  document.getElementById("filmDate").innerHTML = "";
+  document.getElementById("filmImg").src = "YYY";
+  document.getElementById("abstract").innerHTML = "Abastract is unavalaible";
+  document.getElementById("DirectorNames").innerHTML = "";
+  document.getElementById("ActorNames").innerHTML = "";
+  document.getElementById("FreeBase").style.display = "none";
+  document.getElementById("filmImg").style.display = "none";
+
+
   // title date sameAs freebase
   urlclient = document.getElementById("film-uri").value;
   var endpoint = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
@@ -42,6 +56,9 @@ function film() {
         }
         if(typeof bindings[i].foaf != 'undefined') {
           document.getElementById("FreeBase").href = bindings[i].foaf.value;
+          if (document.getElementById("FreeBase").src != "XXX") {
+            document.getElementById("FreeBase").style.display = "block";
+          }
         }
 
       }
@@ -80,6 +97,9 @@ function dbpedia(urlDbpedia) {
         }
         if(typeof bindings2[i].depiction != 'undefined') {
           document.getElementById("filmImg").src = bindings2[i].depiction.value;
+          if (document.getElementById("filmImg").src != "YYY") {
+            document.getElementById("filmImg").style.display = "block";
+          }
         }
       }
     }
@@ -111,14 +131,20 @@ function actorname() {
       console.log("Données obtenues");
       var bindings = JSON.parse(req3.responseText).results.bindings;
       var ul = document.getElementById("ActorNames");
-      ul.innerHTML = ""
       for (var i=0; i<bindings.length; i++) {
-      var li = document.createElement('li');
-      var a = document.createElement('a');
-      a.textContent = bindings[i].actorname.value;
-      a.href = bindings[i].actorpage.value;
-      li.appendChild(a);
-      ul.appendChild(li);
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.textContent = bindings[i].actorname.value;
+        a.href = bindings[i].actorpage.value;
+        li.appendChild(a);
+        ul.appendChild(li);
+      }
+      if (ul.getElementsByTagName('li').length < 1) {
+        var p = document.createElement('p');
+        var li = document.createElement('li');
+        p.textContent = "Unavalaible actors names";
+        li.appendChild(p);
+        ul.appendChild(li);
       }
     }
   };
@@ -149,14 +175,20 @@ function directorname() {
       console.log("Données obtenues");
       var bindings = JSON.parse(req4.responseText).results.bindings;
       var ul = document.getElementById("DirectorNames");
-      ul.innerHTML = ""
       for (var i=0; i<bindings.length; i++) {
-      var li = document.createElement('li');
-      var a = document.createElement('a');
-      a.textContent = bindings[i].directorname.value;
-      a.href = bindings[i].directorpage.value;
-      li.appendChild(a);
-      ul.appendChild(li);
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.textContent = bindings[i].directorname.value;
+        a.href = bindings[i].directorpage.value;
+        li.appendChild(a);
+        ul.appendChild(li);
+      }
+      if (ul.getElementsByTagName('li').length < 1) {
+        var p = document.createElement('p');
+        var li = document.createElement('li');
+        p.textContent = "Unavalaible director(s) name(s)";
+        li.appendChild(p);
+        ul.appendChild(li);
       }
     }
   };
