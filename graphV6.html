@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Exercice Canvas</title>
+	</head>
+	<body>
+		<h1>Graphique baton représentant les notes d'une promo grace à Canvas</h1>
+
+		<!-- On place un canvas dans la page -->
+		<canvas id="canvas01" width="1500" height="250"></canvas>
+
+		<script>
+
+			// On récupère le canvas dans le DOM et on lui attribue une variable.
+			var canvas = document.getElementById('canvas01');
+
+			// Initialiser du canvas qui retourne des méthodes et des propriétés qui nous permettent de "dessiner" dans le canvas
+			var context = canvas.getContext('2d');
+
+			// On définis le jeu de données.
+			var data = [["Martin", 7], ["Clara", 16], ["Cindy", 14], ["Kilian", 5], ["Jordy", 13], ["Elodie", 13], ["John", 12], ["Loic", 9], ["Marie", 18], ["Mathilde", 11], ["Simon", 16], ["Alexandre", 8], ["Mireille", 17], ["Yannick", 10], ["Alicia", 9], ["Moyenne", 11,86]];
+
+			// On trie ces données par ordre croissant.
+			data.sort(function(a,b) {
+		        return a[1]-b[1]
+		    });
+
+		    // On appel la fonction qui va tracer le graphique.
+			drawBarChart(context, data, 0, 60, (canvas.height - 50));
+
+
+			// Fonction permettant de tracer un graphique
+			function drawBarChart(context, data, startX, barWidth, chartHeight) {
+				//Boucle qui va dessiner un rectangle dans le canvas pour chaque tableau contenu dans le tableau data
+				for (var i=0; i < data.length; i++) {
+
+					// Extraire les données du tableau
+					// Pour i, values prend la valeur de i eme case du tableau data (cette i contiens alors un autre tableau constitué de 2 case, exemple pour i = 0 : ["Martin", 7])
+					var values = data[i];
+					//name prend alors la valeur de la 1ere case du tableau values, exemple : à i = 0 on a values = ["Martin", 7], ainsi, values[0] vaut "Martin"
+					var name = values[0];
+					//On définis height comme étant un nombre issus de la 2eme case du tableau values, exemple : à i = 0 on a values = ["Martin", 7], ainsi values[1] vaut 7
+					//On multiplie ensuite ce nombre par 10 pour avoir un graphique plus grand
+					var height = parseInt(values[1])*10;
+
+					// Attribution d'une couleur spéciale 
+
+					// Si la note est la moyenne alors
+					if (name == "Moyenne") {
+						// La barre sera de la couleur #2ecc71
+						context.fillStyle = "#2ecc71";
+					} 
+					// Si la note est celle de Cindy alors
+					else if (name == "Cindy") {
+						// La barre sera de la couleur #F27935
+						context.fillStyle = "#F27935";
+					}
+					// Sinon pour toutes les autres notes
+					else {
+						// La barre sera de la couleur #2980b9
+						context.fillStyle = "#2980b9";
+					}
+
+					// On appel la fonction qui va tracer le graphique à partir des variables définis ci dessus.
+					drawRectangle(context,startX + (i * barWidth) + i,(chartHeight - height),barWidth-10,height,true);
+
+					// On donne un titre au rectangle qui viens d'être créé
+					// Aligné à gauche
+					context.textAlign = "left";
+					// Couleur noir
+					context.fillStyle = "#000";
+					//Ligne 1 contenant le nom
+					context.fillText(name, startX + (i * barWidth) + i, chartHeight +10);
+					//Ligne 2 contenant la note /20
+					context.fillText(height/10+"/20", startX + (i * barWidth) + i, chartHeight +20);	
+				}
+			}
+
+			// Fonction permettant de tracer un rectangle en fonction de coordonnées dans un repère
+			function drawRectangle(contextO, x, y, w, h, fill) {
+				// On démare le tracé
+				contextO.beginPath();
+				//On trace un rectangle selon des coordonnées X - Y
+				contextO.rect(x, y, w, h);
+				// On ferme le tracé
+				contextO.closePath();
+				// Permet de tracer une ligne autours des rectangles pour faire une bordure.
+				contextO.stroke();
+				// Si un argument "fill" existe, alors les rectangles sont remplis, sinon ils sont vides
+				if (fill) contextO.fill();
+			}
+		</script>
+	</body>
+</html>

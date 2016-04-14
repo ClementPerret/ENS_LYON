@@ -11,9 +11,8 @@ function film() {
   'PREFIX dct: <http://purl.org/dc/terms/> ' + 
   'PREFIX foaf: <http://xmlns.com/foaf/0.1/>' +
   'PREFIX owl: <http://www.w3.org/2002/07/owl#>' +
-  'SELECT * { <'+urlclient+'> dct:date ?date; dct:title ?title; owl:sameAs ?sameAs; foaf:page ?foaf. FILTER regex(str(?sameAs), "dbpedia"). FILTER regex(str(?foaf), "freebase"). } ' +
-  'LIMIT 10' +
-  '');
+  'SELECT * {OPTIONAL {<'+urlclient+'> dct:date ?date} OPTIONAL {<'+urlclient+'> dct:title ?title} OPTIONAL {<'+urlclient+'> owl:sameAs ?sameAs. FILTER regex(str(?sameAs), "dbpedia").} OPTIONAL {<'+urlclient+'> foaf:page ?foaf. FILTER regex(str(?foaf), "freebase").} } ' + 'LIMIT 10' + ''
+    );
   var url = endpoint + '?query=' + encodeURIComponent(sparql);
   var req = new XMLHttpRequest();
   req.open("GET", url);
@@ -25,15 +24,26 @@ function film() {
     if (req.status !== 200) {
       console.log("Erreur " + req.status);
     } else {
+
       console.log("Données obtenues");
       var bindings = JSON.parse(req.responseText).results.bindings;
+
       for (var i=0; i<bindings.length; i++) {
-        document.getElementById("filmTitle").innerHTML = bindings[i].title.value;
-        document.getElementById("filmDate").innerHTML = bindings[i].date.value;
-        var urlDbpedia = bindings[i].sameAs.value;
-        dbpedia(urlDbpedia);
-        console.log(urlDbpedia);
-        document.getElementById("FreeBase").href = bindings[i].foaf.value;
+
+        if(typeof bindings[i].title != 'undefined') {
+          document.getElementById("filmTitle").innerHTML = bindings[i].title.value;
+        }
+        if(typeof bindings[i].date != 'undefined') {
+          document.getElementById("filmDate").innerHTML = bindings[i].date.value;
+        }
+        if(typeof bindings[i].sameAs != 'undefined') {
+          var urlDbpedia = bindings[i].sameAs.value;
+          dbpedia(urlDbpedia);
+        }
+        if(typeof bindings[i].foaf != 'undefined') {
+          document.getElementById("FreeBase").href = bindings[i].foaf.value;
+        }
+
       }
     }
   };
@@ -44,13 +54,12 @@ function film() {
   
 function dbpedia(urlDbpedia) {
   // abstract depiction
-  var endpoint2 = 'http://dbpedia.org/sparql';
+  var endpoint2 = 'http://dbpedia.org/sparql/';
   var sparql2 = (
-  'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
-  'PREFIX dbo: <http://dbpedia.org/ontology/>' + 
-  'SELECT * { <'+urlDbpedia+'> dbo:abstract ?abstract; foaf:depiction ?depiction FILTER (LANG(?abstract) = "en"). } ' +
-  'LIMIT 10' +
-  '');
+  'PREFIX foaf: <http://xmlns.com/foaf/0.1/>' +
+  'PREFIX dbo: <http://dbpedia.org/ontology/>' +
+  'SELECT * { <'+urlDbpedia+'> dbo:abstract ?abstract FILTER(LANG(?abstract) = "en"). OPTIONAL {<'+urlDbpedia+'> foaf:depiction ?depiction}}');
+
   var url2 = endpoint2 + '?query=' + encodeURIComponent(sparql2);
   var req2 = new XMLHttpRequest();
   req2.open("GET", url2);
@@ -63,11 +72,15 @@ function dbpedia(urlDbpedia) {
       console.log("Erreur " + req2.status);
     } else {
       console.log("Données obtenues");
-      var bindings = JSON.parse(req2.responseText).results.bindings;
-      console.log(bindings);
-      for (var i=0; i<bindings.length; i++) {
-        document.getElementById("abstract").innerHTML = bindings[i].abstract.value;
-        document.getElementById("filmImg").src = bindings[i].depiction.value;
+      var bindings2 = JSON.parse(req2.responseText).results.bindings;
+      console.log(bindings2);
+      for (var i=0; i<bindings2.length; i++) {
+        if(typeof bindings2[i].abstract != 'undefined') {
+          document.getElementById("abstract").innerHTML = bindings2[i].abstract.value;
+        }
+        if(typeof bindings2[i].depiction != 'undefined') {
+          document.getElementById("filmImg").src = bindings2[i].depiction.value;
+        }
       }
     }
   };
