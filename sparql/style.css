@@ -139,3 +139,9 @@ span.entete {
 	font-size: 2em;
 	text-align: center;
 }
+
+#main_container ul {
+	columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}

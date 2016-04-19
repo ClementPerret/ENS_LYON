@@ -66,7 +66,7 @@ function getluckydirectors() {
 function film(urlclient) {
   var pattern = new RegExp("(http://data.linkedmdb.org/resource/film/)[0-9]+"); 
   var res = pattern.test(urlclient);
-  if (document.getElementById("film-uri").value == "") {
+  if (urlclient == "") {
     document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Merci de saisir un l\'URI d\'un film <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>';
   }
   else if (res == false) {
@@ -259,11 +259,10 @@ function getDirectorName(urlclient) {
 ///////////////////////////////////////////////ACTOR//////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////ACTOR//////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////ACTOR//////////////////////////////////////////////////////////////
-
 function actor(urlactor) {
   var pattern = new RegExp("(http://data.linkedmdb.org/resource/actor/)[0-9]+"); 
   var res = pattern.test(urlactor);
-  if (document.getElementById("actor-uri").value == "") {
+  if (urlactor == "") {
     document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Merci de saisir un l\'URI d\'un acteur <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>';
   }
   else if (res == false) {
@@ -463,7 +462,7 @@ function asDirector(name) {
 function director(urldirector){
   var pattern = new RegExp("(http://data.linkedmdb.org/resource/director/)[0-9]+"); 
   var res = pattern.test(urldirector);
-  if (document.getElementById("director-uri").value == "") {
+  if (urldirector == "") {
     document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Merci de saisir un l\'URI d\'un acteur <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>';
   }
   else if (res == false) {
