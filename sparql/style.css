@@ -1,3 +1,87 @@
+body {
+	font-family: 'Lato', sans-serif;
+	color: white;
+	background: url(background.jpg);
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+nav {
+	width: 100%;
+	top: 0px;
+	position: fixed;
+	overflow: hidden;
+
+}
+nav ul {
+	display: table;
+	background-color: rgba(0, 0, 0, 0.6);
+	width: 100%;
+	margin: 0px;
+	height: 40px;
+}
+
+nav ul li {
+	display: table-cell;
+	line-height: 40px;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 1.3em;
+}
+nav ul li:hover {
+	cursor: pointer;
+	color: #2980b9;
+}
+#title h1 {
+	text-align: center;
+	font-size: 2em;
+	margin-top: 60px;
+}
+#film-uri,
+#actor-uri,
+#director-uri {
+    width: 70%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 35px;
+    background-color: rgba(0, 0, 0, 0.5); ;
+    border: 2px solid white;
+    border-radius: 25px;
+    padding: 0px 15px;
+    color: white;
+}
+#actorbox,
+#directorbox,
+#filmbox {
+    text-align: center;
+}
+
+#actorbox button,
+#directorbox button,
+#filmbox button {
+    height: 50px;
+    width: 150px;
+    border-radius: 25px;
+    background-color: rgba(0, 0, 0, 0.5); 
+    border: 2px solid white;
+    line-height: 40px;
+    font-size: 30px;
+    color: white;
+    vertical-align: middle;
+    margin-top: 15px;
+}
+#actorbox button:hover,
+#directorbox button:hover,
+#filmbox button:hover {
+	cursor: pointer;
+	background-color: rgba(0, 0, 0, 0.7); 
+}
+#main_container {
+	margin-top: 50px;
+}
+#search_container {
+	
+}
 #filmImg,
 #actorImg,
 #directorImg {
@@ -7,11 +91,51 @@
 #actor-pane,
 #director-pane {
     display: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 25px;
+    border: 1px solid #bdc3c7;
+    margin-top: 35px;
+   }
+
+#film-pane header h3,
+#actor-pane header h3,
+#director-pane header h3{
+	text-align: center;
+	font-size: 3em;
+	margin: 0px;
 }
 .link {
-	color: blue;
+	color: #ABB7B7;
 	cursor: pointer;
+}
+.notonstart {
+	display: none;
+}
+#abstract,
+#actorAbstract,
+#directorAbstract {
+	text-align: justify;
+	color: #ABB7B7;
 }
 ul li {
 	list-style: none;
+}
+span.entete {
+	font-size: 1.5em;
+}
+.fa {
+	margin-right: 15px;
+	margin-left: 15px;
+}
+#FreeBase,
+#directorFreebase,
+#actorFreebase {
+	text-decoration: none;
+	color: white;
+}
+#error {
+	color: #D64541;
+	font-size: 2em;
+	text-align: center;
 }

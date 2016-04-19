@@ -1,141 +1,74 @@
 
-hideallpanes();
-showfilms();
+///////////////////////////////////////////////FILM//////////////////////////////////////////////////////////////
+///////////////////////////////////////////////FILM//////////////////////////////////////////////////////////////
+///////////////////////////////////////////////FILM//////////////////////////////////////////////////////////////
+///////////////////////////////////////////////FILM//////////////////////////////////////////////////////////////
+function film(urlclient) {
 
-//// SPA Panes & boxes hidding ////
-function hideallpanes() {
-  document.getElementById("film-pane").style.display = "none";
+  //display panes
+  document.getElementById("film-pane").style.display = "block";
   document.getElementById("actor-pane").style.display = "none";
   document.getElementById("director-pane").style.display = "none";
-  document.getElementById("error").innerHTML = "";
 
- } 
-function showfilms() {
-  document.getElementById("filmbox").style.display = "block";
-  document.getElementById("actorbox").style.display = "none";
-  document.getElementById("directorbox").style.display = "none";
-  document.getElementById("film-uri").value = "";
-  hideallpanes();
-}
-function showactors() {
-  document.getElementById("filmbox").style.display = "none";
-  document.getElementById("actorbox").style.display = "block";
-  document.getElementById("directorbox").style.display = "none";
-  document.getElementById("actor-uri").value = "";
-  hideallpanes();
-}
-function showdirectors() {
-  document.getElementById("filmbox").style.display = "none";
-  document.getElementById("actorbox").style.display = "none";
-  document.getElementById("directorbox").style.display = "block";
-  document.getElementById("director-uri").value = "";
-  hideallpanes();
-}
+  //reinit divs
+  document.getElementById("filmTitle").innerHTML = "";
+  document.getElementById("filmDate").innerHTML = "";
+  document.getElementById("filmImg").src = "YYY";
+  document.getElementById("abstract").innerHTML = "No abstract available";
+  document.getElementById("DirectorNames").innerHTML = "";
+  document.getElementById("ActorNames").innerHTML = "";
+  document.getElementById("FreeBase").style.display = "none";
+  document.getElementById("filmImg").style.display = "none";
 
-//// Get Lucky //// 
-function getluckyfilms() {
-  if (document.getElementById("film-uri").value != "http://data.linkedmdb.org/resource/film/2014") {
-    document.getElementById("film-uri").value = "http://data.linkedmdb.org/resource/film/2014";
-  }
-  else {
-    document.getElementById("film-uri").value = "";
-  }
-}
-function getluckyactors() {
-  if (document.getElementById("actor-uri").value != "http://data.linkedmdb.org/resource/actor/10842") {
-    document.getElementById("actor-uri").value = "http://data.linkedmdb.org/resource/actor/10842";
-  }
-  else {
-    document.getElementById("actor-uri").value = "";
-  }
-}
-function getluckydirectors() {
-  if (document.getElementById("director-uri").value != "http://data.linkedmdb.org/resource/director/3204") {
-    document.getElementById("director-uri").value = "http://data.linkedmdb.org/resource/director/3204";
-  }
-  else {
-    document.getElementById("director-uri").value = "";
-  }
-}
 
-///////////////////////////////////////////////FILM//////////////////////////////////////////////////////////////
-///////////////////////////////////////////////FILM//////////////////////////////////////////////////////////////
-///////////////////////////////////////////////FILM//////////////////////////////////////////////////////////////
-///////////////////////////////////////////////FILM//////////////////////////////////////////////////////////////
+  // title date sameAs freebase
+  var endpoint = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
+  var sparql = (
+  'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
+  'PREFIX dct: <http://purl.org/dc/terms/> ' + 
+  'PREFIX foaf: <http://xmlns.com/foaf/0.1/>' +
+  'PREFIX owl: <http://www.w3.org/2002/07/owl#>' +
+  'SELECT * {OPTIONAL {<'+urlclient+'> dct:date ?date} OPTIONAL {<'+urlclient+'> dct:title ?title} OPTIONAL {<'+urlclient+'> owl:sameAs ?sameAs. FILTER regex(str(?sameAs), "dbpedia").} OPTIONAL {<'+urlclient+'> foaf:page ?foaf. FILTER regex(str(?foaf), "freebase").} } ' );
+  var url = endpoint + '?query=' + encodeURIComponent(sparql);
+  var req = new XMLHttpRequest();
+  req.open("GET", url);
+  req.setRequestHeader('accept', 'application/json');
+  req.onerror = function() {
+    console.log("Échec de chargement " + url);
+  };
+  req.onload = function() {
+    if (req.status !== 200) {
+      console.log("Erreur " + req.status);
+    } else {
 
-function film(urlclient) {
-  var pattern = new RegExp("(http://data.linkedmdb.org/resource/film/)[0-9]+"); 
-  var res = pattern.test(urlclient);
-  if (document.getElementById("film-uri").value == "") {
-    document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Merci de saisir un l\'URI d\'un film <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>';
-  }
-  else if (res == false) {
-    document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> L\'URI saisie ne correspond pas à celle d\'un film <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' ;
-  }
-  else {
-    document.getElementById("error").innerHTML = "";
-    document.getElementById("film-pane").style.display = "block";
-    document.getElementById("actor-pane").style.display = "none";
-    document.getElementById("director-pane").style.display = "none";
-    //reinit divs
-    document.getElementById("filmTitle").innerHTML = "";
-    document.getElementById("filmDate").innerHTML = "";
-    document.getElementById("filmImg").src = "YYY";
-    document.getElementById("abstract").innerHTML = "No abstract available";
-    document.getElementById("DirectorNames").innerHTML = "";
-    document.getElementById("ActorNames").innerHTML = "";
-    document.getElementById("FreeBase").style.display = "none";
-    document.getElementById("filmImg").style.display = "none";
+      console.log("Données obtenues");
+      var bindings = JSON.parse(req.responseText).results.bindings;
 
-    // title date sameAs freebase
-    var endpoint = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
-    var sparql = (
-    'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
-    'PREFIX dct: <http://purl.org/dc/terms/> ' + 
-    'PREFIX foaf: <http://xmlns.com/foaf/0.1/>' +
-    'PREFIX owl: <http://www.w3.org/2002/07/owl#>' +
-    'SELECT * {OPTIONAL {<'+urlclient+'> dct:date ?date} OPTIONAL {<'+urlclient+'> dct:title ?title} OPTIONAL {<'+urlclient+'> owl:sameAs ?sameAs. FILTER regex(str(?sameAs), "dbpedia").} OPTIONAL {<'+urlclient+'> foaf:page ?foaf. FILTER regex(str(?foaf), "freebase").} } ' );
-    var url = endpoint + '?query=' + encodeURIComponent(sparql);
-    var req = new XMLHttpRequest();
-    req.open("GET", url);
-    req.setRequestHeader('accept', 'application/json');
-    req.onerror = function() {
-      console.log("Échec de chargement " + url);
-    };
-    req.onload = function() {
-      if (req.status !== 200) {
-        console.log("Erreur " + req.status);
-      } else {
+      for (var i=0; i<bindings.length; i++) {
 
-        console.log("Données obtenues");
-        var bindings = JSON.parse(req.responseText).results.bindings;
-
-        for (var i=0; i<bindings.length; i++) {
-
-          if(typeof bindings[i].title != 'undefined') {
-            document.getElementById("filmTitle").innerHTML = bindings[i].title.value;
-          }
-          if(typeof bindings[i].date != 'undefined') {
-            document.getElementById("filmDate").innerHTML = bindings[i].date.value;
-          }
-          if(typeof bindings[i].sameAs != 'undefined') {
-            var urlDbpedia = bindings[i].sameAs.value;
-            getAbstractDepiction(urlDbpedia);
-          }
-          if(typeof bindings[i].foaf != 'undefined') {
-            document.getElementById("FreeBase").href = bindings[i].foaf.value;
-            if (document.getElementById("FreeBase").src != "XXX") {
-              document.getElementById("FreeBase").style.display = "block";
-            }
-          }
-
+        if(typeof bindings[i].title != 'undefined') {
+          document.getElementById("filmTitle").innerHTML = bindings[i].title.value;
         }
+        if(typeof bindings[i].date != 'undefined') {
+          document.getElementById("filmDate").innerHTML = bindings[i].date.value;
+        }
+        if(typeof bindings[i].sameAs != 'undefined') {
+          var urlDbpedia = bindings[i].sameAs.value;
+          getAbstractDepiction(urlDbpedia);
+        }
+        if(typeof bindings[i].foaf != 'undefined') {
+          document.getElementById("FreeBase").href = bindings[i].foaf.value;
+          if (document.getElementById("FreeBase").src != "XXX") {
+            document.getElementById("FreeBase").style.display = "block";
+          }
+        }
+
       }
-    };
-    req.send();
-    getActorNames(urlclient);
-    getDirectorName(urlclient);
-  }
+    }
+  };
+  req.send();
+  getActorNames(urlclient);
+  getDirectorName(urlclient);
 }
   
 function getAbstractDepiction(urlDbpedia) {
@@ -261,33 +194,24 @@ function getDirectorName(urlclient) {
 ///////////////////////////////////////////////ACTOR//////////////////////////////////////////////////////////////
 
 function actor(urlactor) {
-  var pattern = new RegExp("(http://data.linkedmdb.org/resource/actor/)[0-9]+"); 
-  var res = pattern.test(urlactor);
-  if (document.getElementById("actor-uri").value == "") {
-    document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Merci de saisir un l\'URI d\'un acteur <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>';
-  }
-  else if (res == false) {
-    document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> L\'URI saisie ne correspond pas à celle d\'un acteur <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' ;
-  }
-  else {
-    document.getElementById("error").innerHTML = "";
-    document.getElementById("film-pane").style.display = "none";
-    document.getElementById("actor-pane").style.display = "block";
-    document.getElementById("director-pane").style.display = "none";
 
-    //reinit divs
-    document.getElementById("actorImg").src = "YYY";
-    document.getElementById("actorAbstract").innerHTML = "No abstract available";
-    document.getElementById("actorName").innerHTML = "";
-    document.getElementById("filmsList").innerHTML = "";
-    document.getElementById("asDirector").innerHTML = "";
-    document.getElementById("actorFreebase").style.display = "none";
-    document.getElementById("actorImg").style.display = "none";
+  //display panes
+  document.getElementById("film-pane").style.display = "none";
+  document.getElementById("actor-pane").style.display = "block";
+  document.getElementById("director-pane").style.display = "none";
 
-    getName(urlactor);
-    getFilms(urlactor);
+  //reinit divs
+  document.getElementById("actorImg").src = "YYY";
+  document.getElementById("actorAbstract").innerHTML = "No abstract available";
+  document.getElementById("actorName").innerHTML = "";
+  document.getElementById("filmsList").innerHTML = "";
+  document.getElementById("asDirector").innerHTML = "";
+  document.getElementById("actorFreebase").style.display = "none";
+  document.getElementById("actorImg").style.display = "none";
+
+  getName(urlactor);
+  getFilms(urlactor);
   }
-}
 
 function getName(urlactor) {
     var endpoint5 = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
@@ -461,33 +385,23 @@ function asDirector(name) {
 
 
 function director(urldirector){
-  var pattern = new RegExp("(http://data.linkedmdb.org/resource/director/)[0-9]+"); 
-  var res = pattern.test(urldirector);
-  if (document.getElementById("director-uri").value == "") {
-    document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Merci de saisir un l\'URI d\'un acteur <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>';
-  }
-  else if (res == false) {
-     document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> L\'URI saisie ne correspond pas à celle d\'un directeur <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' ;
-  }
-  else {
-    document.getElementById("error").innerHTML = "";
-    //display panes
-    document.getElementById("film-pane").style.display = "none";
-    document.getElementById("actor-pane").style.display = "none";
-    document.getElementById("director-pane").style.display = "block";
 
-    //reinit divs
-    document.getElementById("directorImg").src = "YYY";
-    document.getElementById("directorAbstract").innerHTML = "No abstract available";
-    document.getElementById("directorName").innerHTML = "";
-    document.getElementById("directorMovies").innerHTML = "";
-    document.getElementById("asActor").innerHTML = "";
-    document.getElementById("directorFreebase").style.display = "none";
-    document.getElementById("directorImg").style.display = "none";
+  //display panes
+  document.getElementById("film-pane").style.display = "none";
+  document.getElementById("actor-pane").style.display = "none";
+  document.getElementById("director-pane").style.display = "block";
 
-    getDirName(urldirector);
-    getDirFilms(urldirector);
-  }
+  //reinit divs
+  document.getElementById("directorImg").src = "YYY";
+  document.getElementById("directorAbstract").innerHTML = "No abstract available";
+  document.getElementById("directorName").innerHTML = "";
+  document.getElementById("directorMovies").innerHTML = "";
+  document.getElementById("asActor").innerHTML = "";
+  document.getElementById("directorFreebase").style.display = "none";
+  document.getElementById("directorImg").style.display = "none";
+
+  getDirName(urldirector);
+  getDirFilms(urldirector);
 }
 
 function getDirName(urldirector) {

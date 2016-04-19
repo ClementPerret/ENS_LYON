@@ -1,65 +1,100 @@
-
-<meta http-equiv="Context-Type" content="text/html;">
-<meta charset="UTF-8";
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Explorateur LinkedMDb</title>
-    <link rel="stylesheet" href="style.css">
-    
-</head>
-<body>
-    <p>http://data.linkedmdb.org/resource/director/8477<br/>
-http://data.linkedmdb.org/resource/actor/10842<br/>
-http://data.linkedmdb.org/resource/film/2014</p>
-    <input id="film-uri" placeholder="film URI" size="60"><button onClick="film(document.getElementById('film-uri').value)">Go</button><br/>
-    <input id="actor-uri" placeholder="actor URI" size="60"><button onClick="actor(document.getElementById('actor-uri').value)">Go</button><br/>
-    <input id="director-uri" placeholder="director URI" size="60"><button onClick="director(document.getElementById('director-uri').value)">Go</button>
-    <div id="film-pane" class="pane">
-        <header></header>
-        <h1 id="filmTitle"></h1>
-        <h2 id="filmDate"></h2>
-        <img id="filmImg" src="YYY">
-        <p id="abstract"></p>
+    <head>
+        <meta charset="UTF-8">
+        <title>Explorateur LinkedMDb</title>
+        <link rel="stylesheet" href="style.css">
+        <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+        
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <li onClick="showfilms()"><i class="fa fa-film" aria-hidden="true"></i> Films</li>
+                <li onClick="showactors()"><i class="fa fa-user" aria-hidden="true"></i> Actors</li>
+                <li onClick="showdirectors()"><i class="fa fa-video-camera" aria-hidden="true"></i> Directors</li>
+            </ul>
+        </nav>
+        <div id="title">
+            <h1>Explorateur LinkedMDb</h1>
+        </div>
 
-        <p>Director(s)</p>
-        <ul id="DirectorNames">
-        </ul>
-        <p>Actors</p>
-        <ul id="ActorNames">
-        </ul>
-        <p><a id="FreeBase" href="XXX">on Freebase</a></p>
-    </div>
+        <div id="main_container">
+            <div id="search_container">
+                <div id="filmbox">
+                    <input id="film-uri" placeholder="Film URI" size="45"><br/>
+                    <button onClick="film(document.getElementById('film-uri').value)">Search</button>
+                    <button onClick="getluckyfilms()">I'm lucky</button>
+                </div>
+                <div id="actorbox">
+                    <input id="actor-uri" placeholder="Actor URI" size="45"><br/>
+                    <button onClick="actor(document.getElementById('actor-uri').value)">Search</button>
+                    <button onClick="getluckyactors()">I'm lucky</button>
+                </div>
+                <div id="directorbox">
+                    <input id="director-uri" placeholder="Director URI" size="45"><br/>
+                    <button onClick="director(document.getElementById('director-uri').value)">Search</button>
+                    <button onClick="getluckydirectors()">I'm lucky</button>
+                </div>
+            </div>
+            <p id="error"></p>
 
-    <div id="actor-pane" class="pane">
-        <header></header>
-        <h1 id="actorName"></h1>
-        <img src="YYY" id="actorImg">
-        <p id="actorAbstract"></p>
+            <div id="film-pane" class="pane">
+                <header>
+                    <h3>Film</h3>
+                </header>
+                <h1 id="filmTitle"></h1>
+                <h2 id="filmDate"></h2>
+                <img id="filmImg" src="YYY"><br/>
+                <span class="entete"><i class="fa fa-align-justify" aria-hidden="true"></i>Abstract</span>
+                <p id="abstract"></p>
 
-        <p>Films</p>
-        <ul id="filmsList"></ul>
-        <br/>
-        <p>As Director</p>
-        <ul id="asDirector"></ul>
-        <p><a id="actorFreebase" href="XXX">on Freebase</a></p>
-    </div>
-    <div id="director-pane" class="pane">
-        <header></header>
-        <h1 id="directorName"></h1>
+                <span class="entete"><i class="fa fa-video-camera" aria-hidden="true"></i>Director(s)</span>
+                <ul id="DirectorNames">
+                </ul>
+                <span class="entete"><i class="fa fa-user" aria-hidden="true"></i>Actors</span>
+                <ul id="ActorNames">
+                </ul>
+                <p><a id="FreeBase" href="XXX">on Freebase</a></p>
+            </div>
 
-        <!-- pas de owl:sameAs pour les réalisateurs : utiliser celui d'un acteur homonyme -->
-        <img src="YYY" id="directorImg">
-        <p id="directorAbstract"></p>
+            <div id="actor-pane" class="pane">
+                <header>
+                    <h3>Actor</h3>
+                </header>
+                <h1 id="actorName"></h1>
+                <img src="YYY" id="actorImg"><br/>
+                <span class="entete"><i class="fa fa-align-justify" aria-hidden="true"></i>Abstract</span>
+                <p id="actorAbstract"></p>
 
-        <p>Films</p>
-        <ul id="directorMovies"></ul>
-        <br/>
-        <p>As Actor</p>
-        <ul id="asActor"></ul>
-        <p><a id="directorFreebase" href="XXX">on Freebase</a></p>
-    </div>
-    <script src="scripts.js"></script>
-</body>
+                <span class="entete"><i class="fa fa-film" aria-hidden="true"></i>Films</span>
+                <ul id="filmsList"></ul>
+                <br/>
+                <span class="entete"><i class="fa fa-video-camera" aria-hidden="true"></i>As Director</span>
+                <ul id="asDirector"></ul>
+                <p><a id="actorFreebase" href="XXX">on Freebase</a></p>
+            </div>
+            <div id="director-pane" class="pane">
+                <header>
+                    <h3>Director</h3>
+                    
+                </header>
+                <h1 id="directorName"></h1>
+
+                <!-- pas de owl:sameAs pour les réalisateurs : utiliser celui d'un acteur homonyme -->
+                <img src="YYY" id="directorImg"><br/>
+                <span class="entete"><i class="fa fa-align-justify" aria-hidden="true"></i>Abstract</span>
+                <p id="directorAbstract"></p>
+
+                <span class="entete"><i class="fa fa-film" aria-hidden="true"></i>Films</span>
+                <ul id="directorMovies"></ul>
+                <br/>
+                <span class="entete"><i class="fa fa-user" aria-hidden="true"></i>As Actor</span>
+                <ul id="asActor"></ul>
+                <p><a id="directorFreebase" href="XXX">on Freebase</a></p>
+            </div>
+            <script src="scripts.js"></script>
+        </div>
+    </body>
 </html>

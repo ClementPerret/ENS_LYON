@@ -1,0 +1,53 @@
+body {
+	font-family: 'Lato', sans-serif;
+	color: white;
+	background: url(background.jpg);
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+nav {
+	width: 100%;
+	top: 0px;
+	position: fixed;
+
+}
+nav ul {
+	display: table;
+	background-color: rgba(0, 0, 0, 0.6);
+	width: 100%;
+	margin: 0px;
+	height: 40px;
+}
+
+nav ul li {
+	display: table-cell;
+	line-height: 40px;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 1.3em;
+}
+nav #title h1 {
+	text-align: center;
+	font-size: 2em;
+}
+#main_container {
+	margin-top: 150px;
+}
+#filmImg,
+#actorImg,
+#directorImg {
+    width: 200px;
+}
+#film-pane,
+#actor-pane,
+#director-pane {
+    display: none;
+}
+.link {
+	color: blue;
+	cursor: pointer;
+}
+ul li {
+	list-style: none;
+}
