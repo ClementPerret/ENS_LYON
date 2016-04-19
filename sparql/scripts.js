@@ -50,8 +50,8 @@ function getluckyactors() {
   }
 }
 function getluckydirectors() {
-  if (document.getElementById("director-uri").value != "http://data.linkedmdb.org/resource/director/3204") {
-    document.getElementById("director-uri").value = "http://data.linkedmdb.org/resource/director/3204";
+  if (document.getElementById("director-uri").value != "http://data.linkedmdb.org/resource/director/55") {
+    document.getElementById("director-uri").value = "http://data.linkedmdb.org/resource/director/55";
   }
   else {
     document.getElementById("director-uri").value = "";
@@ -67,7 +67,7 @@ function film(urlclient) {
   var pattern = new RegExp("(http://data.linkedmdb.org/resource/film/)[0-9]+"); 
   var res = pattern.test(urlclient);
   if (urlclient == "") {
-    document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Merci de saisir un l\'URI d\'un film <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>';
+    document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Merci de saisir l\'URI d\'un film <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>';
   }
   else if (res == false) {
     document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> L\'URI saisie ne correspond pas à celle d\'un film <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' ;
@@ -263,7 +263,7 @@ function actor(urlactor) {
   var pattern = new RegExp("(http://data.linkedmdb.org/resource/actor/)[0-9]+"); 
   var res = pattern.test(urlactor);
   if (urlactor == "") {
-    document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Merci de saisir un l\'URI d\'un acteur <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>';
+    document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Merci de saisir l\'URI d\'un acteur <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>';
   }
   else if (res == false) {
     document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> L\'URI saisie ne correspond pas à celle d\'un acteur <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' ;
@@ -463,7 +463,7 @@ function director(urldirector){
   var pattern = new RegExp("(http://data.linkedmdb.org/resource/director/)[0-9]+"); 
   var res = pattern.test(urldirector);
   if (urldirector == "") {
-    document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Merci de saisir un l\'URI d\'un acteur <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>';
+    document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Merci de saisir l\'URI d\'un acteur <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>';
   }
   else if (res == false) {
      document.getElementById("error").innerHTML = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> L\'URI saisie ne correspond pas à celle d\'un directeur <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' ;

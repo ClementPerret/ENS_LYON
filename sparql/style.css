@@ -34,7 +34,7 @@ nav ul li:hover {
 }
 #title h1 {
 	text-align: center;
-	font-size: 2em;
+	font-size: 3em;
 	margin-top: 60px;
 }
 #film-uri,
@@ -85,13 +85,16 @@ nav ul li:hover {
 #filmImg,
 #actorImg,
 #directorImg {
-    width: 200px;
+    width: 300px;
+    margin-right: auto;
+    margin-left: auto;
+
 }
 #film-pane,
 #actor-pane,
 #director-pane {
     display: none;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 20px;
     border-radius: 25px;
     border: 1px solid #bdc3c7;
@@ -106,7 +109,7 @@ nav ul li:hover {
 	margin: 0px;
 }
 .link {
-	color: #ABB7B7;
+	color: #D2527F;
 	cursor: pointer;
 }
 .notonstart {
@@ -116,7 +119,9 @@ nav ul li:hover {
 #actorAbstract,
 #directorAbstract {
 	text-align: justify;
-	color: #ABB7B7;
+	color: #D2527F;
+	padding: 0px 40px;
+
 }
 ul li {
 	list-style: none;
@@ -144,4 +149,16 @@ span.entete {
 	columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
+}
+#main_container h1,
+#main_container h2 {
+	text-align: center;
+	display: inline;
+}
+header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+header span {
+	font-size: 1.5em;
 }
