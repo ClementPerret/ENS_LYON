@@ -1,8 +1,15 @@
-    #filmImg {
-        width: 200px;
-    }
-    #film-pane,
-    #actor-pane,
-    #director-pane {
-        display: none;
-    }
+#filmImg {
+    width: 200px;
+}
+#film-pane,
+#actor-pane,
+#director-pane {
+    display: none;
+}
+.link {
+	color: blue;
+	cursor: pointer;
+}
+ul li {
+	list-style: none;
+}

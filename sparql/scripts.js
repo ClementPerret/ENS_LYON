@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////FILM//////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////FILM//////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////FILM//////////////////////////////////////////////////////////////
-function film() {
+function film(urlclient) {
 
   //display panes
   document.getElementById("film-pane").style.display = "block";
@@ -14,7 +14,7 @@ function film() {
   document.getElementById("filmTitle").innerHTML = "";
   document.getElementById("filmDate").innerHTML = "";
   document.getElementById("filmImg").src = "YYY";
-  document.getElementById("abstract").innerHTML = "Abastract is unavalaible";
+  document.getElementById("abstract").innerHTML = "Abstract is unavalaible";
   document.getElementById("DirectorNames").innerHTML = "";
   document.getElementById("ActorNames").innerHTML = "";
   document.getElementById("FreeBase").style.display = "none";
@@ -22,15 +22,13 @@ function film() {
 
 
   // title date sameAs freebase
-  urlclient = document.getElementById("film-uri").value;
   var endpoint = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
   var sparql = (
   'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
   'PREFIX dct: <http://purl.org/dc/terms/> ' + 
   'PREFIX foaf: <http://xmlns.com/foaf/0.1/>' +
   'PREFIX owl: <http://www.w3.org/2002/07/owl#>' +
-  'SELECT * {OPTIONAL {<'+urlclient+'> dct:date ?date} OPTIONAL {<'+urlclient+'> dct:title ?title} OPTIONAL {<'+urlclient+'> owl:sameAs ?sameAs. FILTER regex(str(?sameAs), "dbpedia").} OPTIONAL {<'+urlclient+'> foaf:page ?foaf. FILTER regex(str(?foaf), "freebase").} } ' + 'LIMIT 10' + ''
-    );
+  'SELECT * {OPTIONAL {<'+urlclient+'> dct:date ?date} OPTIONAL {<'+urlclient+'> dct:title ?title} OPTIONAL {<'+urlclient+'> owl:sameAs ?sameAs. FILTER regex(str(?sameAs), "dbpedia").} OPTIONAL {<'+urlclient+'> foaf:page ?foaf. FILTER regex(str(?foaf), "freebase").} } ' );
   var url = endpoint + '?query=' + encodeURIComponent(sparql);
   var req = new XMLHttpRequest();
   req.open("GET", url);
@@ -69,8 +67,8 @@ function film() {
     }
   };
   req.send();
-  getActorNames();
-  getDirectorName();
+  getActorNames(urlclient);
+  getDirectorName(urlclient);
 }
   
 function getAbstractDepiction(urlDbpedia) {
@@ -110,16 +108,14 @@ function getAbstractDepiction(urlDbpedia) {
   req2.send();
 }
 
-function getActorNames() {
+function getActorNames(urlclient) {
   var endpoint3 = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
   var sparql3 = (
   'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
   'PREFIX dct: <http://purl.org/dc/terms/> ' + 
   'PREFIX foaf: <http://xmlns.com/foaf/0.1/>' +
   'PREFIX owl: <http://www.w3.org/2002/07/owl#>' +
-  'SELECT * { <'+urlclient+'> :actor ?actor. ?actor :actor_name ?actorname. ?actor foaf:page ?actorpage} ' +
-  'LIMIT 10' +
-  '');
+  'SELECT * { <'+urlclient+'> :actor ?actor. ?actor :actor_name ?actorname.} ');
   var url3 = endpoint3 + '?query=' + encodeURIComponent(sparql3);
   var req3 = new XMLHttpRequest();
   req3.open("GET", url3);
@@ -136,10 +132,8 @@ function getActorNames() {
       var ul = document.getElementById("ActorNames");
       for (var i=0; i<bindings3.length; i++) {
         var li = document.createElement('li');
-        var a = document.createElement('a');
-        a.textContent = bindings3[i].actorname.value;
-        a.href = bindings3[i].actorpage.value;
-        li.appendChild(a);
+        var p = "<span class='link' onClick=actor('"+bindings3[i].actor.value+"')>"+bindings3[i].actorname.value+"</span>";
+        li.innerHTML = p;
         ul.appendChild(li);
       }
       if (ul.getElementsByTagName('li').length < 1) {
@@ -154,16 +148,14 @@ function getActorNames() {
   req3.send();
 }
 
-function getDirectorName() {
+function getDirectorName(urlclient) {
   var endpoint4 = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
   var sparql4 = (
   'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
   'PREFIX dct: <http://purl.org/dc/terms/> ' + 
   'PREFIX foaf: <http://xmlns.com/foaf/0.1/>' +
   'PREFIX owl: <http://www.w3.org/2002/07/owl#>' +
-  'SELECT * { <'+urlclient+'> :director ?director. ?director :director_name ?directorname. ?director foaf:page ?directorpage} ' +
-  'LIMIT 10' +
-  '');
+  'SELECT * { <'+urlclient+'> :director ?director. ?director :director_name ?directorname.}');
   var url4 = endpoint4 + '?query=' + encodeURIComponent(sparql4);
   var req4 = new XMLHttpRequest();
   req4.open("GET", url4);
@@ -180,10 +172,8 @@ function getDirectorName() {
       var ul = document.getElementById("DirectorNames");
       for (var i=0; i<bindings4.length; i++) {
         var li = document.createElement('li');
-        var a = document.createElement('a');
-        a.textContent = bindings4[i].directorname.value;
-        a.href = bindings4[i].directorpage.value;
-        li.appendChild(a);
+        var p = "<span class='link' onClick=director('"+bindings4[i].director.value+"')>"+bindings4[i].directorname.value+"</span>";
+        li.innerHTML = p;
         ul.appendChild(li);
       }
       if (ul.getElementsByTagName('li').length < 1) {
@@ -203,8 +193,8 @@ function getDirectorName() {
 ///////////////////////////////////////////////ACTOR//////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////ACTOR//////////////////////////////////////////////////////////////
 
-function actor() {
-  urlactor = document.getElementById("actor-uri").value;
+function actor(urlactor) {
+
   //display panes
   document.getElementById("film-pane").style.display = "none";
   document.getElementById("actor-pane").style.display = "block";
@@ -217,11 +207,11 @@ function actor() {
   document.getElementById("actorFreebase").style.display = "none";
   document.getElementById("actorImg").style.display = "none";
 
-  getName();
-  getFilms();
+  getName(urlactor);
+  getFilms(urlactor);
   }
 
-function getName() {
+function getName(urlactor) {
     var endpoint5 = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
     var sparql5 = (
     'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
@@ -261,14 +251,13 @@ function getName() {
 
 }
 
-function getFilms() {
+function getFilms(urlactor) {
     var endpoint6 = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
     var sparql6 = (
     'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
     'PREFIX dct: <http://purl.org/dc/terms/>' +
     'PREFIX foaf: <http://xmlns.com/foaf/0.1/>' +
-    'SELECT ?title ?filmpage { ?p :actor <http://data.linkedmdb.org/resource/actor/29704>. ?p dct:title ?title. ?p foaf:page ?filmpage. FILTER regex(str(?filmpage), "freebase")}LIMIT 10'
-
+    'SELECT ?title ?p { ?p :actor <'+urlactor+'>. ?p dct:title ?title.}'
       );
     var url6 = endpoint6 + '?query=' + encodeURIComponent(sparql6);
     var req6 = new XMLHttpRequest();
@@ -287,10 +276,8 @@ function getFilms() {
         var ul = document.getElementById("filmsList");
         for (var i=0; i<bindings6.length; i++) {
           var li = document.createElement('li');
-          var a = document.createElement('a');
-          a.textContent = bindings6[i].title.value;
-          a.href = bindings6[i].filmpage.value;
-          li.appendChild(a);
+          var p = "<span class='link' onClick=film('"+bindings6[i].p.value+"')>"+bindings6[i].title.value+"</span>";
+          li.innerHTML = p;
           ul.appendChild(li);
         }
         if (ul.getElementsByTagName('li').length < 1) {
@@ -311,7 +298,7 @@ function asDirector(name) {
       'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
       'PREFIX dct: <http://purl.org/dc/terms/> '+
       'PREFIX foaf: <http://xmlns.com/foaf/0.1/>' +
-      'SELECT ?page ?title { ?films a :film. ?films dct:title ?title. ?films :director ?director. ?director :director_name ?directorname. FILTER CONTAINS(?directorname, "'+name+'"). ?films foaf:page ?page. FILTER regex(str(?page), "freebase").}'
+      'SELECT * { ?films a :film. ?films dct:title ?title. ?films :director ?director. ?director :director_name ?directorname. FILTER CONTAINS(?directorname, "'+name+'").}'
 
       );
     var url7 = endpoint7 + '?query=' + encodeURIComponent(sparql7);
@@ -331,10 +318,8 @@ function asDirector(name) {
         var ul = document.getElementById("asDirector");
         for (var i=0; i<bindings7.length; i++) {
           var li = document.createElement('li');
-          var a = document.createElement('a');
-          a.textContent = bindings7[i].title.value;
-          a.href = bindings7[i].page.value;
-          li.appendChild(a);
+          var p = "<span class='link' onClick=film('"+bindings7[i].films.value+"')>"+bindings7[i].title.value+"</span>";
+          li.innerHTML = p;
           ul.appendChild(li);
         }
         if (ul.getElementsByTagName('li').length < 1) {
@@ -354,6 +339,141 @@ function asDirector(name) {
 ///////////////////////////////////////////////DIRECTOR//////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////DIRECTOR//////////////////////////////////////////////////////////////
 
-function director(){
 
+function director(urldirector){
+
+  //display panes
+  document.getElementById("film-pane").style.display = "none";
+  document.getElementById("actor-pane").style.display = "none";
+  document.getElementById("director-pane").style.display = "block";
+
+  //reinit divs
+  document.getElementById("directorName").innerHTML = "";
+  document.getElementById("directorMovies").innerHTML = "";
+  document.getElementById("asActor").innerHTML = "";
+  document.getElementById("directorFreebase").style.display = "none";
+  document.getElementById("directorImg").style.display = "none";
+
+  getDirName(urldirector);
+  getDirFilms(urldirector);
+}
+
+function getDirName(urldirector) {
+    var endpoint8 = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
+    var sparql8 = (
+    'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
+    'SELECT * { <'+urldirector+'> :director_name ?nom; foaf:page ?freebase. FILTER regex(str(?freebase), "freebase")}'
+      );
+    var url8 = endpoint8 + '?query=' + encodeURIComponent(sparql8);
+    var req8 = new XMLHttpRequest();
+    req8.open("GET", url8);
+    req8.setRequestHeader('accept', 'application/json');
+    req8.onerror = function() {
+      console.log("Échec de chargement " + url8);
+    };
+    req8.onload = function() {
+      if (req8.status !== 200) {
+        console.log("Erreur " + req8.status);
+      } else {
+        console.log("Données obtenues");
+        var bindings8 = JSON.parse(req8.responseText).results.bindings;
+        console.log(bindings8);
+        for (var i=0; i<bindings8.length; i++) {
+          if(typeof bindings8[i].nom != 'undefined') {
+            var name = bindings8[i].nom.value;
+            asActor(name);
+            document.getElementById('directorName').innerHTML = name;
+          }
+          if(typeof bindings8[i].freebase != 'undefined') {
+            document.getElementById('directorFreebase').href = bindings8[i].freebase.value;
+            if (document.getElementById("directorFreebase").src != "XXX") {
+              document.getElementById("directorFreebase").style.display = "block";
+            }
+          }
+        }
+      }
+    };
+    req8.send();
+}
+
+function getDirFilms(urldirector) {
+    var endpoint9 = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
+    var sparql9 = (
+    'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
+    'PREFIX dct: <http://purl.org/dc/terms/>' +
+    'SELECT ?film ?filmname {?film :director <'+urldirector+'>. ?film dct:title ?filmname.}'
+      );
+    var url9 = endpoint9 + '?query=' + encodeURIComponent(sparql9);
+    var req9= new XMLHttpRequest();
+    req9.open("GET", url9);
+    req9.setRequestHeader('accept', 'application/json');
+    req9.onerror = function() {
+      console.log("Échec de chargement " + url9);
+    };
+    req9.onload = function() {
+      if (req9.status !== 200) {
+        console.log("Erreur " + req9.status);
+      } else {
+
+        console.log("Données obtenues");
+        var bindings9 = JSON.parse(req9.responseText).results.bindings;
+        var ul = document.getElementById("directorMovies");
+        for (var i=0; i<bindings9.length; i++) {
+          var li = document.createElement('li');
+          var p = "<span class='link' onClick=film('"+bindings9[i].film.value+"')>"+bindings9[i].filmname.value+"</span>";
+          li.innerHTML = p;
+          ul.appendChild(li);
+        }
+        if (ul.getElementsByTagName('li').length < 1) {
+          var p = document.createElement('p');
+          var li = document.createElement('li');
+          p.textContent = "This director has directed no movie";
+          li.appendChild(p);
+          ul.appendChild(li);
+        }
+      }
+    };
+    req9.send();
+}
+
+function asActor(name) {
+   var endpoint10 = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
+    var sparql10 = (
+      'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
+      'PREFIX dct: <http://purl.org/dc/terms/> '+
+      'PREFIX foaf: <http://xmlns.com/foaf/0.1/>' +
+      'SELECT ?title ?films{?films a :film. ?films dct:title ?title. ?films :actor ?actor. ?actor :actor_name ?actorname. FILTER CONTAINS(?actorname, "'+name+'").}'
+
+      );
+    var url10 = endpoint10 + '?query=' + encodeURIComponent(sparql10);
+    var req10 = new XMLHttpRequest();
+    req10.open("GET", url10);
+    req10.setRequestHeader('accept', 'application/json');
+    req10.onerror = function() {
+      console.log("Échec de chargement " + url10);
+    };
+    req10.onload = function() {
+      if (req10.status !== 200) {
+        console.log("Erreur " + req10.status);
+      } else {
+
+        console.log("Données obtenues");
+        var bindings10 = JSON.parse(req10.responseText).results.bindings;
+        var ul = document.getElementById("asActor");
+        for (var i=0; i<bindings10.length; i++) {
+          var li = document.createElement('li');
+          var p = "<span class='link' onClick=film('"+bindings10[i].films.value+"')>"+bindings10[i].title.value+"</span>";
+          li.innerHTML = p;
+          ul.appendChild(li);
+        }
+        if (ul.getElementsByTagName('li').length < 1) {
+          var p = document.createElement('p');
+          var li = document.createElement('li');
+          p.textContent = "This director has played in no movie";
+          li.appendChild(p);
+          ul.appendChild(li);
+        }
+      }
+    };
+    req10.send();
 }

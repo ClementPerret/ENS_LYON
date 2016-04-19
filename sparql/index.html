@@ -10,9 +10,9 @@
     
 </head>
 <body>
-    <input id="film-uri" placeholder="film URI" size="60"><button onClick='film()'>Go</button><br/>
-    <input id="actor-uri" placeholder="actor URI" size="60"><button onClick='actor()'>Go</button><br/>
-    <input id="director-uri" placeholder="director URI" size="60"><button onClick='director()'>Go</button>
+    <input id="film-uri" placeholder="film URI" size="60"><button onClick="film(document.getElementById('film-uri').value)">Go</button><br/>
+    <input id="actor-uri" placeholder="actor URI" size="60"><button onClick="actor(document.getElementById('actor-uri').value)">Go</button><br/>
+    <input id="director-uri" placeholder="director URI" size="60"><button onClick="director(document.getElementById('director-uri').value)">Go</button>
     <div id="film-pane" class="pane">
         <header></header>
         <h1 id="filmTitle"></h1>
@@ -44,15 +44,18 @@
     </div>
     <div id="director-pane" class="pane">
         <header></header>
-        <h1>XXX-Name</h1>
+        <h1 id="directorName"></h1>
+
         <!-- pas de owl:sameAs pour les réalisateurs : utiliser celui d'un acteur homonyme -->
-        <img src="YYY">
-        <p id="directorAbstract">YYY Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer volutpat vitae erat eget lobortis. Duis rutrum pulvinar tortor et sollicitudin. Suspendisse quis commodo massa. Mauris tincidunt cursus odio, id lobortis lorem vulputate ac. Vestibulum molestie nunc magna, a vestibulum dolor commodo non.</p>
+        <img src="YYY" id="directorImg">
+        <p id="directorAbstract"></p>
 
         <p>Films</p>
         <ul id="directorMovies"></ul>
-        <p><a href="XXX">as actor?</a></p> <!-- se baser sur le nom -->
-        <p><a href="XXX">on Freebase</a></p>
+        <br/>
+        <p>As Actor</p>
+        <ul id="asActor"></ul>
+        <p><a id="directorFreebase" href="XXX">on Freebase</a></p>
     </div>
     <script src="scripts.js"></script>
 </body>
