@@ -14,7 +14,7 @@ function film(urlclient) {
   document.getElementById("filmTitle").innerHTML = "";
   document.getElementById("filmDate").innerHTML = "";
   document.getElementById("filmImg").src = "YYY";
-  document.getElementById("abstract").innerHTML = "Abstract is unavalaible";
+  document.getElementById("abstract").innerHTML = "No abstract available";
   document.getElementById("DirectorNames").innerHTML = "";
   document.getElementById("ActorNames").innerHTML = "";
   document.getElementById("FreeBase").style.display = "none";
@@ -201,6 +201,8 @@ function actor(urlactor) {
   document.getElementById("director-pane").style.display = "none";
 
   //reinit divs
+  document.getElementById("actorImg").src = "YYY";
+  document.getElementById("actorAbstract").innerHTML = "No abstract available";
   document.getElementById("actorName").innerHTML = "";
   document.getElementById("filmsList").innerHTML = "";
   document.getElementById("asDirector").innerHTML = "";
@@ -233,7 +235,7 @@ function getName(urlactor) {
         var bindings5 = JSON.parse(req5.responseText).results.bindings;
         console.log(bindings5);
         for (var i=0; i<bindings5.length; i++) {
-          if(typeof bindings5[i].same != 'undefined') {
+         if(typeof bindings5[i].same != 'undefined') {
             var urlDbpedia = bindings5[i].same.value;
             getActorAbstractDepiction(urlDbpedia);
           }
@@ -256,7 +258,40 @@ function getName(urlactor) {
 }
 
 function getActorAbstractDepiction(urlDbpedia) {
+  // abstract depiction
+  var endpoint12 = 'http://dbpedia.org/sparql/';
+  var sparql12 = (
+  'PREFIX foaf: <http://xmlns.com/foaf/0.1/>' +
+  'PREFIX dbo: <http://dbpedia.org/ontology/>' +
+  'SELECT * { <'+urlDbpedia+'> dbo:abstract ?abstract FILTER(LANG(?abstract) = "en"). OPTIONAL {<'+urlDbpedia+'> foaf:depiction ?depiction}}');
 
+  var url12 = endpoint12 + '?query=' + encodeURIComponent(sparql12);
+  var req12 = new XMLHttpRequest();
+  req12.open("GET", url12);
+  req12.setRequestHeader('accept', 'application/json');
+  req12.onerror = function() {
+    console.log("Échec de chargement " + url12);
+  };
+  req12.onload = function() {
+    if (req12.status !== 200) {
+      console.log("Erreur " + req12.status);
+    } else {
+      console.log("Données obtenues");
+      var bindings12 = JSON.parse(req12.responseText).results.bindings;
+      for (var i=0; i<bindings12.length; i++) {
+        if(typeof bindings12[i].abstract != 'undefined') {
+          document.getElementById("actorAbstract").innerHTML = bindings12[i].abstract.value;
+        }
+        if(typeof bindings12[i].depiction != 'undefined') {
+          document.getElementById("actorImg").src = bindings12[i].depiction.value;
+          if (document.getElementById("actorImg").src != "YYY") {
+            document.getElementById("actorImg").style.display = "block";
+          }
+        }
+      }
+    }
+  };
+  req12.send();
 }
 
 
@@ -357,6 +392,8 @@ function director(urldirector){
   document.getElementById("director-pane").style.display = "block";
 
   //reinit divs
+  document.getElementById("directorImg").src = "YYY";
+  document.getElementById("directorAbstract").innerHTML = "No abstract available";
   document.getElementById("directorName").innerHTML = "";
   document.getElementById("directorMovies").innerHTML = "";
   document.getElementById("asActor").innerHTML = "";
@@ -371,7 +408,7 @@ function getDirName(urldirector) {
     var endpoint8 = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
     var sparql8 = (
     'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
-    'SELECT * { <'+urldirector+'> :director_name ?nom; foaf:page ?freebase. FILTER regex(str(?freebase), "freebase"). OPTIONAL {<'+urldirector+'> owl:sameAs ?same. FILTER regex(str(?same), "dbpedia").}}'
+    'SELECT * { <'+urldirector+'> :director_name ?nom; foaf:page ?freebase. FILTER regex(str(?freebase), "freebase").}'
       );
     var url8 = endpoint8 + '?query=' + encodeURIComponent(sparql8);
     var req8 = new XMLHttpRequest();
@@ -388,13 +425,10 @@ function getDirName(urldirector) {
         var bindings8 = JSON.parse(req8.responseText).results.bindings;
         console.log(bindings8);
         for (var i=0; i<bindings8.length; i++) {
-          if(typeof bindings8[i].same != 'undefined') {
-            var urlDbpedia = bindings8[i].same.value;
-            getDirectorAbstractDepiction(urlDbpedia);
-          }
           if(typeof bindings8[i].nom != 'undefined') {
             var name = bindings8[i].nom.value;
             asActor(name);
+            getDirectorActorName(name);
             document.getElementById('directorName').innerHTML = name;
           }
           if(typeof bindings8[i].freebase != 'undefined') {
@@ -408,9 +442,73 @@ function getDirName(urldirector) {
     };
     req8.send();
 }
+function getDirectorActorName(name) {
+  var endpoint14 = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
+  var sparql14 = (
+  'PREFIX : <http://data.linkedmdb.org/resource/movie/>' +
+  'PREFIX dct: <http://purl.org/dc/terms/>' +
+  'PREFIX owl: <http://www.w3.org/2002/07/owl#>' +
+  'SELECT * {?actor a :actor.?actor :actor_name ?actorname. FILTER CONTAINS(?actorname, "Steven Spielberg"). OPTIONAL {?actor owl:sameAs ?same. FILTER regex(str(?same), "dbpedia").}}');
+  var url14 = endpoint14 + '?query=' + encodeURIComponent(sparql14);
+  var req14 = new XMLHttpRequest();
+  req14.open("GET", url14);
+  req14.setRequestHeader('accept', 'application/json');
+  req14.onerror = function() {
+    console.log("Échec de chargement " + url14);
+  };
+  req14.onload = function() {
+    if (req14.status !== 200) {
+      console.log("Erreur " + req14.status);
+    } else {
+      console.log("Données obtenues");
+      var bindings14 = JSON.parse(req14.responseText).results.bindings;
+      for (var i=0; i<bindings14.length; i++) {
+        if(typeof bindings14[i].same != 'undefined') {
+          var urlDbpedia = bindings14.same.value;
+          getDirectorAbstractDepiction(urlDbpedia);
+        }
+      }
+    }
+  };
+  req14.send();
+}
 
-function getActorAbstractDepiction(urlDbpedia) {
+function getDirectorAbstractDepiction(urlDbpedia) {
+  console.log(urlDbpedia);
+  // abstract depiction
+  var endpoint13 = 'http://dbpedia.org/sparql/';
+  var sparql13 = (
+  'PREFIX foaf: <http://xmlns.com/foaf/0.1/>' +
+  'PREFIX dbo: <http://dbpedia.org/ontology/>' +
+  'SELECT * { <'+urlDbpedia+'> dbo:abstract ?abstract FILTER(LANG(?abstract) = "en"). OPTIONAL {<'+urlDbpedia+'> foaf:depiction ?depiction}}');
 
+  var url13 = endpoint13 + '?query=' + encodeURIComponent(sparql13);
+  var req13 = new XMLHttpRequest();
+  req13.open("GET", url13);
+  req13.setRequestHeader('accept', 'application/json');
+  req13.onerror = function() {
+    console.log("Échec de chargement " + url13);
+  };
+  req13.onload = function() {
+    if (req13.status !== 200) {
+      console.log("Erreur " + req13.status);
+    } else {
+      console.log("Données obtenues");
+      var bindings13 = JSON.parse(req13.responseText).results.bindings;
+      for (var i=0; i<bindings13.length; i++) {
+        if(typeof bindings13[i].abstract != 'undefined') {
+          document.getElementById("directorAbstract").innerHTML = bindings13[i].abstract.value;
+        }
+        if(typeof bindings13[i].depiction != 'undefined') {
+          document.getElementById("directorImg").src = bindings13[i].depiction.value;
+          if (document.getElementById("directorImg").src != "YYY") {
+            document.getElementById("directorImg").style.display = "block";
+          }
+        }
+      }
+    }
+  };
+  req13.send();
 }
 
 function getDirFilms(urldirector) {

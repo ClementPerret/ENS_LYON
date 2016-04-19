@@ -1,4 +1,6 @@
-#filmImg {
+#filmImg,
+#actorImg,
+#directorImg {
     width: 200px;
 }
 #film-pane,
