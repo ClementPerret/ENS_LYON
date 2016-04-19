@@ -215,7 +215,7 @@ function getName(urlactor) {
     var endpoint5 = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
     var sparql5 = (
     'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
-    'SELECT ?nom ?page {<'+urlactor+'> :actor_name ?nom; foaf:page ?page.}'
+    'SELECT ?nom ?page ?same {<'+urlactor+'> :actor_name ?nom; foaf:page ?page. FILTER regex(str(?page), "freebase") OPTIONAL {<'+urlactor+'> owl:sameAs ?same. FILTER regex(str(?same), "dbpedia").}}'
       );
     var url5 = endpoint5 + '?query=' + encodeURIComponent(sparql5);
     var req5 = new XMLHttpRequest();
@@ -233,6 +233,10 @@ function getName(urlactor) {
         var bindings5 = JSON.parse(req5.responseText).results.bindings;
         console.log(bindings5);
         for (var i=0; i<bindings5.length; i++) {
+          if(typeof bindings5[i].same != 'undefined') {
+            var urlDbpedia = bindings5[i].same.value;
+            getActorAbstractDepiction(urlDbpedia);
+          }
           if(typeof bindings5[i].nom != 'undefined') {
             var name = bindings5[i].nom.value;
             asDirector(name);
@@ -250,6 +254,11 @@ function getName(urlactor) {
     req5.send();
 
 }
+
+function getActorAbstractDepiction(urlDbpedia) {
+
+}
+
 
 function getFilms(urlactor) {
     var endpoint6 = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
@@ -362,7 +371,7 @@ function getDirName(urldirector) {
     var endpoint8 = 'http://dsi-liris-silex.univ-lyon1.fr/archinfo/linkedmdb/';
     var sparql8 = (
     'PREFIX : <http://data.linkedmdb.org/resource/movie/> '+
-    'SELECT * { <'+urldirector+'> :director_name ?nom; foaf:page ?freebase. FILTER regex(str(?freebase), "freebase")}'
+    'SELECT * { <'+urldirector+'> :director_name ?nom; foaf:page ?freebase. FILTER regex(str(?freebase), "freebase"). OPTIONAL {<'+urldirector+'> owl:sameAs ?same. FILTER regex(str(?same), "dbpedia").}}'
       );
     var url8 = endpoint8 + '?query=' + encodeURIComponent(sparql8);
     var req8 = new XMLHttpRequest();
@@ -379,6 +388,10 @@ function getDirName(urldirector) {
         var bindings8 = JSON.parse(req8.responseText).results.bindings;
         console.log(bindings8);
         for (var i=0; i<bindings8.length; i++) {
+          if(typeof bindings8[i].same != 'undefined') {
+            var urlDbpedia = bindings8[i].same.value;
+            getDirectorAbstractDepiction(urlDbpedia);
+          }
           if(typeof bindings8[i].nom != 'undefined') {
             var name = bindings8[i].nom.value;
             asActor(name);
@@ -394,6 +407,10 @@ function getDirName(urldirector) {
       }
     };
     req8.send();
+}
+
+function getActorAbstractDepiction(urlDbpedia) {
+
 }
 
 function getDirFilms(urldirector) {
