@@ -41,62 +41,74 @@
             <p id="error"></p>
 
             <div id="film-pane" class="pane">
-                <header>
-                    <h3>Film</h3>
-                    <h1 id="filmTitle"></h1>
-                    <span>  -  </span>
-                    <h2 id="filmDate"></h2>
-                </header>
+                <div class="padding nobg">
+                    <header>
+                        <h3>Film</h3>
+                        <h1 id="filmTitle"></h1>
+                        <span>  -  </span>
+                        <h2 id="filmDate"></h2>
+                    </header>
 
+                    <img id="filmImg" src="YYY"><br/>
+                </div>
+                <div class="padding parallax2">
+                    <span class="entete"><i class="fa fa-align-justify" aria-hidden="true"></i>Abstract</span>
+                    <p id="abstract"></p>
 
-                <img id="filmImg" src="YYY"><br/>
-                <span class="entete"><i class="fa fa-align-justify" aria-hidden="true"></i>Abstract</span>
-                <p id="abstract"></p>
-
-                <span class="entete"><i class="fa fa-video-camera" aria-hidden="true"></i>Director(s)</span>
-                <ul id="DirectorNames">
-                </ul>
-                <span class="entete"><i class="fa fa-user" aria-hidden="true"></i>Actors</span>
-                <ul id="ActorNames">
-                </ul>
-                <p><a id="FreeBase" href="XXX">on Freebase</a></p>
+                    <span class="entete"><i class="fa fa-video-camera" aria-hidden="true"></i>Director(s)</span>
+                    <ul id="DirectorNames">
+                    </ul>
+                    <span class="entete"><i class="fa fa-user" aria-hidden="true"></i>Actors</span>
+                    <ul id="ActorNames">
+                    </ul>
+                    <p><a id="FreeBase" href="XXX">on Freebase</a></p>
+                </div>
             </div>
 
             <div id="actor-pane" class="pane">
-                <header>
-                    <h3>Actor</h3>
-                    <h1 id="actorName"></h1>
-                </header>
-                
-                <img src="YYY" id="actorImg"><br/>
-                <span class="entete"><i class="fa fa-align-justify" aria-hidden="true"></i>Abstract</span>
-                <p id="actorAbstract"></p>
+                <div class="padding nobg">
+                    <header>
+                        <h3>Actor</h3>
+                        <h1 id="actorName"></h1>
+                    </header>
+                    
+                    <img src="YYY" id="actorImg"><br/>
+                </div>
+                <div class="padding parallax2">
+                    <span class="entete"><i class="fa fa-align-justify" aria-hidden="true"></i>Abstract</span>
+                    <p id="actorAbstract"></p>
 
-                <span class="entete"><i class="fa fa-film" aria-hidden="true"></i>Films</span>
-                <ul id="filmsList"></ul>
-                <br/>
-                <span class="entete"><i class="fa fa-video-camera" aria-hidden="true"></i>As Director</span>
-                <ul id="asDirector"></ul>
-                <p><a id="actorFreebase" href="XXX">on Freebase</a></p>
+                    <span class="entete"><i class="fa fa-film" aria-hidden="true"></i>Films</span>
+                    <ul id="filmsList"></ul>
+                    <br/>
+                    <span class="entete"><i class="fa fa-video-camera" aria-hidden="true"></i>As Director</span>
+                    <ul id="asDirector"></ul>
+                    <p><a id="actorFreebase" href="XXX">on Freebase</a></p>
+                </div>
             </div>
+
             <div id="director-pane" class="pane">
-                <header>
-                    <h3>Director</h3>
-                    <h1 id="directorName"></h1>
-                </header>
+                <div class="padding nobg">
+                    <header>
+                        <h3>Director</h3>
+                        <h1 id="directorName"></h1>
+                    </header>
 
 
-                <!-- pas de owl:sameAs pour les réalisateurs : utiliser celui d'un acteur homonyme -->
-                <img src="YYY" id="directorImg"><br/>
-                <span class="entete"><i class="fa fa-align-justify" aria-hidden="true"></i>Abstract</span>
-                <p id="directorAbstract"></p>
+                    <!-- pas de owl:sameAs pour les réalisateurs : utiliser celui d'un acteur homonyme -->
+                    <img src="YYY" id="directorImg"><br/>
+                </div>
+                <div class="padding parallax2">
+                    <span class="entete"><i class="fa fa-align-justify" aria-hidden="true"></i>Abstract</span>
+                    <p id="directorAbstract"></p>
 
-                <span class="entete"><i class="fa fa-film" aria-hidden="true"></i>Films</span>
-                <ul id="directorMovies"></ul>
-                <br/>
-                <span class="entete"><i class="fa fa-user" aria-hidden="true"></i>As Actor</span>
-                <ul id="asActor"></ul>
-                <p><a id="directorFreebase" href="XXX">on Freebase</a></p>
+                    <span class="entete"><i class="fa fa-film" aria-hidden="true"></i>Films</span>
+                    <ul id="directorMovies"></ul>
+                    <br/>
+                    <span class="entete"><i class="fa fa-user" aria-hidden="true"></i>As Actor</span>
+                    <ul id="asActor"></ul>
+                    <p><a id="directorFreebase" href="XXX">on Freebase</a></p>
+                </div>
             </div>
             <script src="scripts.js"></script>
         </div>
